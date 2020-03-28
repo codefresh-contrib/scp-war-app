@@ -1,15 +1,21 @@
-# sparkjava-war-example
+# Deploying an Application to Tomcat using SCP and Codefresh
+![tomcat-and-codefresh](tomcat-and-codefresh.png)
 
-Original source: https://github.com/kliakos/sparkjava-war-example
+[Original source](https://github.com/kliakos/sparkjava-war-example)
 
-Build war with maven and sparkjava framework
+This is a simple Hello World application using the [Spark Java framework](http://sparkjava.com/).
 
-Steps:
+## Prerequisites
 
-1. Download a fresh [Tomcat 8 distribution](https://tomcat.apache.org/download-80.cgi)
-2. Clone this repository to your local machine
-3. Run mvn package
-4. Copy the generated `sparkjava-hello-world-1.0.war` to the Tomcat `webapps` folder
-5. Start Tomcat by running `bin\startup.bat` (or `bin\startaup.sh` for Linux)
-5. Tomcat will automatically deploy the war
-6. Open [http://localhost:8080/sparkjava-hello-world-1.0/hello](http://localhost:8080/sparkjava-hello-world-1.0/hello) in your browser
+- A [free Codefresh account](https://codefresh.io/docs/docs/getting-started/create-a-codefresh-account/)
+- A distribution of [Tomcat](https://tomcat.apache.org/download-90.cgi) setup on a remote/local server (running with port 8080 exposed, if you are not running this locally)
+
+## Build/Deploy Locally
+
+1. Run `mvn clean package`
+2. Copy the war file from the /target directory into the Tomcat 'webapps' directory
+3. Access the application at [http://localhost:8080/sparkjava-hello-world-1.0/hello](http://localhost:8080/sparkjava-hello-world-1.0/hello) in your browser
+
+## Build in Codefresh
+
+[Example pipeline](codefresh.yml)
