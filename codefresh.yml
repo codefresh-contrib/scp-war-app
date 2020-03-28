@@ -1,0 +1,44 @@
+# More examples of Codefresh YAML can be found at
+# https://codefresh.io/docs/docs/yaml-examples/examples/
+
+version: "1.0"
+# Stages can help you organize your steps in stages
+stages:
+  - "clone"
+  - "package"
+  - "transfer"
+
+steps:
+  clone:
+    title: "Cloning repository..."
+    type: "git-clone"
+    stage: "clone"
+    arguments:
+      repo: "codefresh-contrib/sparkjava-war-example"
+      
+  package:
+    title: "Packaging war..."
+    type: "freestyle"
+    stage: "package"
+    arguments:
+      image: "maven:3.5.2-jdk-8-alpine"
+      working_directory: "${{clone}}"
+      commands:
+        - "mvn -Dmaven.repo.local=/codefresh/volume/m2_repository clean package"
+
+  transfer:
+    title: "Transferring war to Tomcat..."
+    type: "freestyle"
+    stage: "transfer"
+    arguments:
+        image: "ictu/sshpass:latest"
+        working_directory: "${{package}}/target"
+        environment:
+          - USER=<USER>
+          - HOST=<HOST.IP.ADDRESS>
+          - PASSWORD=<PASSWORD>
+          - TOMCAT_DIR=<path/to/tomcat/webapps>
+        commands:
+          - "echo | ssh-keygen -P '' -t rsa"
+          - "sshpass -p $PASSWORD ssh-copy-id -i /root/.ssh/id_rsa.pub -o StrictHostKeyChecking=no $USER@$HOST"
+          - "scp sparkjava-hello-world-1.0.war $USER@$HOST:$TOMCAT_DIR"
