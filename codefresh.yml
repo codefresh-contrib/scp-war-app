@@ -14,7 +14,7 @@ steps:
     type: "git-clone"
     stage: "clone"
     arguments:
-      repo: "codefresh-contrib/sparkjava-war-example"
+      repo: "codefresh-contrib/scp-war-app"
       
   package:
     title: "Packaging war..."
